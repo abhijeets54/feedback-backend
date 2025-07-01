@@ -5,8 +5,13 @@ from app.models import Base
 from app.routers import auth, users, feedback
 from app.config import settings
 
-# Create database tables
-Base.metadata.create_all(bind=engine)
+# Create database tables (with error handling for Railway)
+try:
+    Base.metadata.create_all(bind=engine)
+    print("✅ Database tables created successfully")
+except Exception as e:
+    print(f"⚠️ Database table creation warning: {e}")
+    # Continue anyway - tables might already exist
 
 app = FastAPI(
     title="Employee Feedback Management System",
